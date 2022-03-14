@@ -12,7 +12,7 @@ test_image = tf.random.normal(mean=0, stddev=1, shape=(32, 50, 50, 3))
 conv = Conv2D(filters=8, kernel_size=(3, 3), padding='same', activation='relu')
 conv_pool = MaxPooling2D(pool_size=2, strides=2)
 flatten = Flatten()
-dense = Dense(units=10, activation='softmax')
+dense = Dense(units=10, activation='softmax') # classification으로 softmax를 활성함수로 사용
 
 p_color('inputs', test_image)
 x = conv(test_image)
