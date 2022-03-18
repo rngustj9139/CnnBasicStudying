@@ -77,7 +77,6 @@ for layer in model.layers:
         w, b = layer.get_weights()
         print(w.shape, b.shape, '\n')
 
-
 #########################################
 
 ######################################### sequential + model sub-classing (하이브리드)
