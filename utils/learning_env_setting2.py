@@ -1,6 +1,6 @@
 import os
 from termcolor import colored
-from utils.Learning_env_setting1 import dir_setting, continue_setting
+from utils.learning_env_setting1 import dir_setting, continue_setting
 
 dir_name = 'train1'
 CONTINUE_LEARNING = True
