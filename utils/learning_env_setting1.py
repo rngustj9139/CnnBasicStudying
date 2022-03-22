@@ -9,19 +9,16 @@ from keras.metrics import Mean, SparseCategoricalAccuracy
 
 def dir_setting(dir_name, CONTINUE_LEARNING):
     cp_path = os.path.join(os.getcwd(), dir_name) # 현재 디렉터리 위치와 만들고자 하는 디렉터리 이름(dir_name)을 합침
-    confusion_path = os.path.join(cp_path, 'confusion_matrix')
     model_path = os.path.join(cp_path, 'model')
 
     if CONTINUE_LEARNING == False and os.path.isdir(cp_path): # CONTINUE_LEARNING이 False이고 디렉터리가 존재하면
         shutil.rmtree(cp_path)  # 디렉터리 내에 남아있는 정보 싹 지움
     if not os.path.isdir(cp_path):
         os.makedirs(cp_path, exist_ok=True) # 디렉터리 만들기
-        os.makedirs(confusion_path, exist_ok=True)
         os.makedirs(model_path, exist_ok=True)
 
     path_dict = {
         'cp_path': cp_path,
-        'confusion_path': confusion_path,
         'model_path': model_path
     }
 
@@ -47,7 +44,7 @@ def get_classification_metrics():
 
     return metric_objects
 
-def continue_setting(CONTINUE_LEARNING, path_dict, model=None):
+def continue_setting(CONTINUE_LEARNING, path_dict, model=None): # 디폴트:None
     if CONTINUE_LEARNING == True: # 중간에 중단되었다가 다시 시작하는 경우
         epoch_list = os.listdir(path_dict['model_path'])
         epoch_list = [int(epoch.split('_')[1]) for epoch in epoch_list]

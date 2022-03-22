@@ -7,7 +7,7 @@ from keras.layers import Conv2D, MaxPooling2D
 from keras.layers import Flatten, Dense, Activation
 
 from keras.losses import SparseCategoricalCrossentropy # 사용할 Loss function
-from keras import optimizers # optimizers.SGD
+from keras.optimizers import gradient_descent_v2 # gradient_descent_v2.SGD
 from keras.metrics import Mean, SparseCategoricalAccuracy
 
 from utils.learning_env_setting1 import dir_setting
@@ -23,7 +23,7 @@ start_epoch = 0
 train_ratio = 0.8
 train_batch_size, test_batch_size = 32, 128
 
-epochs = 30
+epochs = 5
 learning_rate = 0.01
 # === Hyperparameter Setting end ===
 
@@ -67,8 +67,8 @@ class MnistClassifier(Model):
         return x
 # === Model Implementation end ===
 
-loss_objects = SparseCategoricalCrossentropy # 사용할 Loss function
-optimizer = optimizers.SGD(learning_rate=learning_rate)
+loss_objects = SparseCategoricalCrossentropy() # 사용할 Loss function
+optimizer = gradient_descent_v2.SGD(learning_rate=learning_rate)
 
 train_loss = Mean()
 train_acc = SparseCategoricalAccuracy()
@@ -80,6 +80,8 @@ test_loss = Mean()
 test_acc = SparseCategoricalAccuracy()
 
 model = MnistClassifier()
+
+metric_objects = dict()
 
 @tf.function
 def trainer():
@@ -97,6 +99,9 @@ def trainer():
         train_loss(loss)
         train_acc(labels, predictions)
 
+    metric_objects['train_loss'] = train_loss
+    metric_objects['train_acc'] = train_acc
+
 def validation():
     global validation_ds, loss_objects
     global validation_loss, validation_acc
@@ -107,6 +112,9 @@ def validation():
 
         validation_loss(loss)
         validation_acc(labels, predictions)
+
+    metric_objects['validation_loss'] = validation_loss
+    metric_objects['validation_acc'] = validation_acc
 
 def test():
     global test_ds, loss_objects
@@ -119,15 +127,16 @@ def test():
         test_loss(loss)
         test_acc(labels, predictions)
 
+    metric_objects['test_loss'] = test_loss
+    metric_objects['test_acc'] = test_acc
+
 for epoch in range(start_epoch, epochs):
     trainer()
     validation()
 
-    training_reporter(epoch, losses_accs,
-                      train_loss=train_loss, train_acc=train_acc,
-                      validation_loss=validation_loss, validation_acc=validation_acc)
-    save_metrics_model(epoch, model, losses_accs, path_dict)
+    training_reporter(epoch, losses_accs, metric_objects)
+    save_metrics_model(epoch, model, losses_accs, path_dict, 1)
     metric_visualizer(losses_accs, path_dict['cp_path'])
-    resetter(train_loss, train_acc, validation_loss, validation_acc) # 초기화
+    resetter(metric_objects) # 초기화
 
 

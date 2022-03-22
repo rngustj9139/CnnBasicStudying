@@ -4,6 +4,10 @@ import tensorflow_datasets as tfds
 def load_processing_mnist(train_ratio, train_batch_size, test_batch_size):
     (train_validation_ds, test_ds), ds_info = tfds.load(name="mnist", shuffle_files=True, as_supervised=True, split=['train', 'test'], with_info=True)
 
+    print("---------")
+    print("ds info\n", ds_info)
+    print("---------")
+
     n_train_validation = ds_info.splits['train'].num_examples
     n_train = int(n_train_validation * train_ratio)
     n_validation = n_train_validation - n_train

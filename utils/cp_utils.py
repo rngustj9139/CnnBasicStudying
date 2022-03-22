@@ -12,8 +12,6 @@ def save_metrics_model(epoch, model, losses_accs, path_dict, save_period):
                         validation_losses=losses_accs['validation_losses'],
                         validation_accs=losses_accs['validation_accs'])
 
-losses_accs = np.load('./C:/Users/mnb91/PycharmProjects/cnnstudy/losses_accs.npz')
-
 def metric_visualizer(losses_accs, save_path): # 각 epoch마다 저장
     fig, ax = plt.subplots(figsize=(35, 15))
     ax2 = ax.twinx()
@@ -37,9 +35,9 @@ def metric_visualizer(losses_accs, save_path): # 각 epoch마다 저장
     ax2_yticks = np.arange(20, 101, 5)
     ax2_yticks_minor = np.arange(20, 101, 1)
 
-    ax.set_yricks(ax_yticks)
+    ax.set_yticks(ax_yticks)
     ax.set_ylim([0, ax_yticks_M])
-    ax.set_yrickslabels(np.around(ax_yticks, 2))
+    ax.set_yticklabels(np.around(ax_yticks, 2))
 
     ax2_ylim = ax2.get_ylim()
     ax2.set_ylim([20, 100])

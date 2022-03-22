@@ -1,6 +1,6 @@
 from termcolor import colored
 
-def resetter(metric_objects):
+def resetter(metric_objects): # 초기화
     metric_objects['train_loss'].reset_states()
     metric_objects['train_acc'].reset_states()
     metric_objects['validation_loss'].reset_states()
@@ -19,7 +19,7 @@ def training_reporter(epoch, losses_accs, metric_objects, exp_name=None): # 여�
 
     if exp_name:
         print(colored('Exp: ', 'red', 'on_white'), exp_name)
-    print(colored('Epoch: ', 'red', epoch))
+    print(colored('Epoch: ', 'red'), epoch)
 
     template = 'Train Loss: {:.4f}\t Train Accuracy: {:.2f}% \n' + \
         'Validation Loss: {:.4f}\t Validation Accuracy: {:.2f}% \n'
